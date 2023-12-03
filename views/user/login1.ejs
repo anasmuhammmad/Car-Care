@@ -1,0 +1,119 @@
+<%- include('../layout/user/layout') %>
+<link rel="stylesheet" href="/stylesheet/user-login.css">
+<!-- --> <%- include('../partials/user-header') %>
+<div class="container-fluid banner-login">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>Login</h1>
+        </div>
+    </div>
+</div>
+
+<!-- 1 layer of login -->
+<section class="vh-100">
+  <div class="container py-5 h-100">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+        <% if(locals.message.error){ %>
+          <p style="color: red;"><%= message.error %></p>
+      <% } %>
+    
+      <% if(locals.message){ %>
+          <p style="color: red;"><%= message.warning %></p>
+      <% } %>
+      <% if(locals.message){ %>
+          <p style="color: red;"><%= message.banned %></p>
+      <% } %>
+      <% if(locals.message){ %>
+          <p style="color: red;"><%= message.notMatching %></p>
+      <% } %>
+        <form  action="/login" method="post">
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <input type="email" id="form1Example13" name="email" class="form-control form-control-lg" />
+            <label class="form-label"  for="form1Example13">Email address</label>
+            <span id="email-validation-msg" style="color: red;"></span>
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <input type="password" id="form1Example23" class="form-control form-control-lg" />
+            <label class="form-label" name="password" for="form1Example23">Password</label>
+          </div>
+
+          <div class="d-flex  align-items-center mb-4">
+            <!-- Checkbox -->
+            <div>
+              <!-- <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
+              <label class="form-check-label" for="form1Example3"> Remember me </label> -->
+              <a href="#!">Forgot password?</a>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center align-items-center">
+             <p style="font-size: small;">Don't you have an account? <a href="/signup"><u>Sign IN</u></a></p>
+          </div>
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
+
+        </form>
+      </div>
+      <div class="col-md-8 col-lg-7 col-xl-6">
+        <img src="/assets/tools.png"
+          class="img-fluid" alt="Phone image">
+      </div>
+    </div>
+  </div>
+</section>
+<div class="container-fluid mt-5 sl">
+  <div class="row" style="height: 100%;">
+      <!-- Card 1 -->
+      <div class="col-md-4">
+          <div class="card cd-sl">
+              <!-- <img src="image1.jpg" class="card-img-top" alt="Image 1"> -->
+              <div class="card-body mt-5">
+                  <h4 class="card-title">Free Delivery</h4>
+                  <p class="card-text text-secondary">Card 1 Subtitle</p>
+              </div>
+          </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-md-4">
+          <div class="card cd-sl">
+              <!-- <img src="image2.jpg" class="card-img-top" alt="Image 2"> -->
+              <div class="card-body mt-5">
+                  <h4 class="card-title">14 Days Return</h4>
+                  <p class="card-text text-secondary">For all oders over $50, consectetur adipim scing elit.</p>
+              </div>
+          </div>
+      </div>
+      <!-- card 3 -->
+      <div class="col-md-4">
+          <div class="card cd-sl">
+              <!-- <img src="image3.jpg" class="card-img-top" alt="Image 3"> -->
+              <div class="card-body mt-5">
+                  <h4 class="card-title">Secure Payment</h4>
+                  <p class="card-text text-secondary">100% secure payment, consectetur adipim scing elit.</p>
+              </div>
+          </div>
+      </div>
+  </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const emailInput = document.getElementById('email');
+        const emailValidationMsg = document.getElementById('email-validation-msg');
+
+        emailInput.addEventListener('input', function () {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const isEmailValid = emailRegex.test(emailInput.value);
+
+            if (isEmailValid) {
+                emailValidationMsg.textContent = ''; // Clear the validation message
+            } else {
+                emailValidationMsg.textContent = 'Invalid email format';
+            }
+        });
+
+    });
+</script>
+<%- include('../partials/user-footer') %>

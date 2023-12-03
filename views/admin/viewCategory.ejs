@@ -1,0 +1,64 @@
+<%- include('../layout/admin/layout') %>
+<%- include('../partials/admin-header-checking') %>
+            <!-- Main Content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="container" style="margin-left: 10%; width: 82%; margin-top: 6%;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2>CATEGORY LIST</h2>
+                        <a href="/admin/addCategory"><button class="btn btn-primary" id="addProduct">Add Category</button></a>
+                    </div>
+
+                    <div class="table-responsive mt-4">
+                     
+                        <table class="table table-bordered table-shadow mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Categories</th>
+                                    <th>Visibility</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% Categories.forEach(Category => { %>
+                                    <tr>
+                                      <td><%= Category.Name %></td>
+                                      <td class="<%= Category.Display === 'Active' ? 'active-status' : 'inactive-status' %>"><%= Category.Display %></td>
+                                      <td>
+                                        <a href="/admin/editCategory/<%= Category._id %>" class="btn btn-dark  btn-sm">Edit</a>
+                                       
+                                        <%if(Category.Display === "Active") {%>
+                                            <a href="/admin/viewCategory/<%=Category._id %>" class="pl-3 pr-3 mt-1 btn btn-warning btn-sm">Hide</a>
+                                            <% } else { %>
+                                                <a href="/admin/viewCategory/<%=Category._id %>" class="pl-3 pr-3 mt-1 btn btn-warning btn-sm">Visible</a>
+                                                <% } %>
+                                      </td>
+                                    </tr>
+                                  <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- * perPage -->
+                
+                    <% if (Categories.length > 0) { %>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <p>Showing <%= (currentPage - 1) * perPage + 1 %>-
+                              <%= currentPage * perPage  %> results from <%= totalCount %></p>
+                            <ul class="pagination">
+                              <% for (let i = 1; i <= totalPages; i++) { %>
+                                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                                  <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                                </li>
+                              <% } %>
+                            </ul>
+                          </div>
+                          <% } else { %>
+                            <p>No results found.</p>
+                          <% } %>
+                    </div>
+    <!-- Include Bootstrap JS and jQuery (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

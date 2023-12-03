@@ -1,0 +1,388 @@
+<%- include('../layout/user/layout') %>
+    <link rel="stylesheet" href="/stylesheet/userProfile.css">
+    <%- include('../partials/user-header') %>
+        <div class="container-fluid bg-secondery" style="background: linear-gradient(234deg,white,rgb(147, 184, 209));">
+            <% if(message.nomatch) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= message.nomatch %>
+                </div>
+                <% } %>
+                    <% if(message.wrongOld) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <%= message.wrongOld %>
+                        </div>
+                        <% } %>
+                            <% if(message.success) { %>
+                                <div class="alert alert-success" role="alert">
+                                    <%= message.success %>
+                                </div>
+                                <% } %>
+                                    <% if(message.profileUpdated) { %>
+                                        <div class="alert alert-success" role="alert">
+                                            <%= message.profileUpdated %>
+                                        </div>
+                                        <% } %>
+                                            <div class="main-body">
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="card mt-3 rounded-0">
+                                                            <div class="card-body text-center">
+                                                                <div
+                                                                    class="d-flex p-2 justify-content-center align-items-center bg-dark">
+                                                                    <h6 class="text-light">User Detials</h6>
+                                                                </div>
+                                                                <% if(user) { %>
+                                                                    <div class="mt-3">
+                                                                        <h4>
+                                                                            <%= user.Name %>
+                                                                        </h4>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-sm-3">
+                                                                                <h6 class="mb-0">Full Name</h6>
+                                                                            </div>
+                                                                            <div class="col-sm-9 text-secondary">
+                                                                                <form action="/profile" method="post">
+                                                                                    <input type="text" required
+                                                                                        class="form-control" name="Name"
+                                                                                        value="<%= user.Name %>"
+                                                                                        pattern="^\S.*$"
+                                                                                        title="No white spaces allowed">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-sm-3">
+                                                                                <h6 class="mb-0">Mobile</h6>
+                                                                            </div>
+                                                                            <div class="col-sm-9 text-secondary">
+                                                                                <input type="tel" class="form-control"
+                                                                                    name="MobNo"
+                                                                                    value="<%= user.MobNo %>"
+                                                                                    pattern="\d{10}"
+                                                                                    title="Mobile number must contain exactly 10 digits">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12 col-md-6">
+                                                                                <!-- Save Changes Button -->
+                                                                                <form action="/profile" method="post">
+                                                                                    <button type="submit"
+                                                                                        class="btn btn-primary btn-block">Save
+                                                                                        Changes</button>
+                                                                                </form>
+                                                                                <% } %>
+                                                                            </div>
+                                                                            <div
+                                                                                class="col-sm-12 col-md-6 mt-3 mt-md-0">
+                                                                                <!-- Change Password Button -->
+                                                                                <button type="button"
+                                                                                    class="btn btn-info btn-block"
+                                                                                    data-bs-toggle="modal"
+                                                                                    data-bs-target="#changePasswordModal">Change
+                                                                                    Password</button>
+                                                                            </div>
+                                                                            <div class="col-sm-12 mt-3">
+                                                                                <!-- Logout Button -->
+                                                                                <a href="/logout"
+                                                                                    class="btn btn-secondary btn-block">Logout</a>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6 mt-3">
+                                                        <div class="card rounded-0">
+                                                            <div class="card-body">
+                                                                <div
+                                                                    class="row col-md-12 ml-2 mb-2 justify-content-center pb-4 pt-2">
+
+                                                                    <h4>Wallet Balance :</h4>
+                                                                    <h4 class="text-success">₹ <%= user.Wallet %> /-
+                                                                    </h4>
+
+                                                                </div>
+
+                                                                <div class="d-flex justify-content-center">
+                                                                    <a href="/view-wallet-history"><button type="button"
+                                                                            class="btn btn-outline-secondary px-4">View
+                                                                            Wallet History</button></a>
+
+                                                                </div>
+                                                            </div>
+                                                            <a class="btn text-dark d-flex-column  border-0">
+                                                                <% if (ReferalAmount && ReferalAmount.length> 0) {%>
+                                                                    <div class="wallet-header">
+                                                                        Refer to your friends and earn
+                                                                        <%=ReferalAmount[0].Amount %> in each.
+                                                                    </div>
+                                                                    <% } %>
+                                                                        <div>
+                                                                            <h6>Your referral link : </h6>
+                                                                            <h6 class="text-primary mt-4"
+                                                                                id="referral-link">
+                                                                                caarcare.shop/signup/<%=user._id%>
+                                                                            </h6>
+                                                                        </div>
+                                                                        <div class="p-4">
+                                                                            <button id="copyButton"
+                                                                                class="fa fa-copy fa-xl  border-0"></button>
+                                                                        </div>
+                                                                        <span id="copySuccessMessage"
+                                                                            class="d-none fw-bold text-success"> Text
+                                                                            copied to
+                                                                            clipboard! </span>
+                                                            </a>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="card rounded-0">
+                                                <div class="card-header bg-dark text-white">
+                                                    More Options
+                                                </div>
+                                                <div class="card-body row justify-content-between">
+                                                    <div class="col-md-4 mb-2">
+                                                        <a href="/Address" class="btn btn-outline-primary btn-block">Address</a>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <a href="/orderHistory" class="btn btn-outline-primary btn-block">Orders</a>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <button type="button" class="btn btn-outline-primary btn-block" data-bs-toggle="modal" data-bs-target="#couponsModal">Coupons</button>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <a href="/wishlist" class="btn btn-outline-primary btn-block">Wishlist</a>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <a href="/cart" class="btn btn-outline-primary btn-block">Cart</a>
+                                                    </div>
+                                                    <div class="col-md-4 mb-2">
+                                                        <a href="/contact" class="btn btn-outline-primary btn-block">Contact</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <!-- Change Password Modal -->
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                    </div>
+                    <div class="modal-body">
+                        <% if(message.nomatch) { %>
+                            <div class="alert alert-danger" role="alert">
+                                <%= message.nomatch %>
+                            </div>
+                            <% } %>
+                                <form action="/changePassword" method="post">
+                                    <div class="mb-3">
+                                        <label for="oldPassword" class="form-label">Old Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="oldPassword"
+                                                name="oldPassword" required>
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="oldPasswordToggle"
+                                                style="background-color: rgba(212, 214, 216, 0.889);">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">New Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="newPassword"
+                                                name="newPassword" required>
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="newPasswordToggle"
+                                                style="background-color: rgba(212, 214, 216, 0.889);">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control" id="confirmPassword"
+                                                name="confirmPassword" required>
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                id="confirmPasswordToggle"
+                                                style="background-color: rgba(212, 214, 216, 0.889);">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Change Password</button>
+                                </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- //coupons modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="couponsModal" tabindex="-1" aria-labelledby="couponsModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="couponsModalLabel">Coupons</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> X </button>
+                    </div>
+                    <div class="modal-body">
+                        <h1 class="text-center tickerTimes">My Coupons</h1>
+                        <div class="container">
+                            <% if (coupons) {%>
+                                <%coupons.forEach(function(coupon){%>
+                                    <div class="coupon-card mt-3">
+                                        <h3>
+                                            <%=coupon.CouponName%>
+                                        </h3>
+                                        <div class="coupon-row">
+                                            <span id="cpnCode">
+                                                <%=coupon.CouponCode%>
+                                            </span>
+                                            <span id="cpnBtn">Copy Code</span>
+                                        </div>
+                                        <p>Valid Till:<%= coupon.CouponExpiryDate %>
+                                        </p>
+                                        <div class="circle1"></div>
+                                        <div class="circle2"></div>
+                                    </div>
+                                    <%})%>
+                                        <% } %>
+                                            <% if (unusedCoupons && unusedCoupons.length> 0) {%>
+                                                <% unusedCoupons.forEach(function(coupon){%>
+                                                    <div class="coupon-card mt-3">
+                                                        <h3>
+                                                            New User Coupon
+                                                        </h3>
+                                                        <div class="coupon-row">
+                                                            <span id="cpnCode1">
+                                                                <%=coupon.CouponCode%>
+                                                            </span>
+                                                            <span id="cpnBtn1">Copy Code</span>
+                                                        </div>
+                                                        <div class="circle1"></div>
+                                                        <div class="circle2"></div>
+                                                    </div>
+                                                    <%})%>
+                                                        <% } %>
+                        </div>
+                        <!-- Customize this section based on your coupon data -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- / -->
+
+        <style>
+            .card {
+
+
+
+                border-radius: 2.5rem;
+                margin-bottom: 1.5rem;
+                box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Get the password input fields
+                const oldPasswordInput = document.getElementById('oldPassword');
+                const newPasswordInput = document.getElementById('newPassword');
+                const confirmPasswordInput = document.getElementById('confirmPassword');
+
+                // Get the corresponding toggle buttons and initial icon classes
+                const toggleButtons = {
+                    oldPassword: document.getElementById('oldPasswordToggle'),
+                    newPassword: document.getElementById('newPasswordToggle'),
+                    confirmPassword: document.getElementById('confirmPasswordToggle')
+                };
+
+                // Toggle password visibility
+                function togglePasswordVisibility(input, toggleButton) {
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+
+                    // Update the button icon based on the password visibility
+                    const iconClass = type === 'password' ? 'fa-eye' : 'fa-eye-slash';
+                    toggleButton.innerHTML = `<i class="fa ${iconClass}"></i>`;
+                }
+
+                // Attach click event listeners to toggle buttons
+                for (const key in toggleButtons) {
+                    if (Object.hasOwnProperty.call(toggleButtons, key)) {
+                        const toggleButton = toggleButtons[key];
+                        const inputField = document.getElementById(key);
+
+                        toggleButton.addEventListener('click', function () {
+                            togglePasswordVisibility(inputField, toggleButton);
+                        });
+                    }
+                }
+            });
+        </script>
+        <script>
+            document.getElementById("copyButton").addEventListener("click", function () {
+                const referralLink = document.getElementById("referral-link").textContent;
+
+                const tempInput = document.createElement("input");
+                tempInput.value = referralLink;
+                document.body.appendChild(tempInput);
+
+                tempInput.select();
+                document.execCommand("copy");
+
+                document.body.removeChild(tempInput);
+
+                const successMessage = document.getElementById("copySuccessMessage");
+                successMessage.classList.remove("d-none");
+
+                setTimeout(function () {
+                    successMessage.classList.add("d-none");
+                }, 3000);
+            });
+        </script>
+        <script>
+            var cpnBtn = document.getElementById("cpnBtn");
+            var cpnBtn1 = document.getElementById("cpnBtn1");
+            var cpnCode = document.getElementById("cpnCode");
+            var cpnCode1 = document.getElementById("cpnCode1");
+
+            cpnBtn.onclick = function () {
+                navigator.clipboard.writeText(cpnCode.innerHTML);
+                cpnBtn.innerHTML = "COPIED";
+                setTimeout(function () {
+                    cpnBtn.innerHTML = "COPY CODE";
+                }, 5000);
+            }
+            cpnBtn1.onclick = function () {
+                navigator.clipboard.writeText(cpnCode1.innerHTML);
+                cpnBtn1.innerHTML = "COPIED";
+                setTimeout(function () {
+                    cpnBtn.innerHTML = "COPY CODE";
+                }, 5000);
+            }
+        </script>
+
+        <%- include('../layout/user/footer') %>

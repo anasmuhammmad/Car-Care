@@ -1,0 +1,86 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+    <%- include('../layout/user/layout') %>
+    <style>
+        .body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #CFE6F9;
+        }
+        .card {
+            width: 400px;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+    </style>
+<!-- </head>
+<body> -->
+    <%- include('../partials/user-header')%>
+    <div class="body">
+    <div class="card">
+        <h3 class="card-title">OTP Verification</h3>
+        <p class="card-subtitle mb-2 text-muted">Please enter the OTP sent to your email.</p>
+       <% if(locals.referedUser) {%>
+            <form action="/verifyEmail/<%= referedUser %>" method="post">
+        <% } else {%>
+            <form action="/verifyEmail" method="post">
+        <% } %>
+        <input type="text" class="form-control mb-3"  name="otp" placeholder="Enter OTP">
+        <button class="btn btn-primary btn-block" type="submit">Verify</button>
+    </form>
+        <% if(message.error){ %>
+            <p style="color: red;"><%= message.error %></p>
+      <%  } %>
+      <div class="d-flex"> <p class="text-info">OTP will be expired in : <p id="timer">01:00</p></p></div>
+      <% if(locals.referedUser) {%>
+        <div id="resendOtp" style="display: none;"><p class="mt-3">Didn't receive the email? <a href="/resendOtp/<%= referedUser%> " class="card-link">Resend OTP</a></p></div>
+    <% } else {%>
+        <div id="resendOtp" style="display: none;"><p class="mt-3">Didn't receive the email? <a href="/resendOtp" class="card-link">Resend OTP</a></p></div>
+    <% } %>
+    </div>
+    </div>
+</div>
+    <!-- Include Bootstrap JS and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded',function startTimer() {
+            let duration = 60; // Duration in seconds
+            const timerDisplay = document.getElementById('timer');
+
+            function updateTimer() {
+                const minutes = Math.floor(duration / 60);
+                let seconds = duration % 60;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                timerDisplay.textContent = `${minutes}:${seconds}`;
+
+                if (duration === 0) {
+                    clearInterval(countdown);
+                    timerDisplay.textContent = "00:00";
+                    resendOtp.style.display = 'block';
+                } else {
+                    duration--;
+                }
+            }
+        
+
+            // Initial call to display the full minute
+            updateTimer();
+
+            // // Set up the countdown
+            countdown = setInterval(updateTimer, 1000);
+        })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

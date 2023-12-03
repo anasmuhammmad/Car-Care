@@ -1,0 +1,255 @@
+<%- include('../layout/user/layout') %>
+  <link rel="stylesheet" href="/stylesheet/user-cart.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <%- include('../partials/user-header') %>
+
+
+    <% if(userCart && userCart.Products && userCart.Products.length>0) { %>
+      <div class="container-fluid banner">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h1>Cart</h1>
+          </div>
+        </div>
+      </div>
+      <!-- cart + summary -->
+      <section class="bg-total my-5">
+        <div class="container-fluid">
+          <div class="row">
+            <!-- cart -->
+            <div class="col-lg-9">
+              <div class="card border shadow-0">
+                <div class="m-4">
+                  <!-- <div class="d-flex justify-content-center">
+                    <h4 class="card-title mb-4">Your shopping cart</h4>
+                </div>
+                 -->
+                  <div class="head d-flex justify-content-between">
+                    <P>Product</P>
+                    <p>Quantity</p>
+                    <p>Actions</p>
+                  </div>
+                  <% userCart.Products.forEach((cartProducts)=>{ %>
+                    <div class="row gy-3 mb-4">
+                      <div class="col-lg-5">
+                        <div class="me-lg-5">
+                          <div class="d-flex">
+                            <img src="/uploads/<%= cartProducts.ProductId.images[0] %>" class="border rounded me-3"
+                              style="width: 96px; height: 96px" />
+                            <div class="">
+                              <a href="#" class="nav-link">
+                                <%= cartProducts.ProductId.ProductName %>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-2 col-sm-6 col-6 d-flex flex-column mt-2">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <button class="btn btn-dark decrease-quantity"
+                              data-product-id="<%=cartProducts.ProductId._id %>">
+                              -
+                            </button>
+                          </div>
+                          <input type="text" class="form-control text-center"
+                            id="count_<%=cartProducts.ProductId._id %>" value="<%=cartProducts.Quantity %>"
+                            data-available-quantity="<%=cartProducts.ProductId.
+AvailableQuantity %>" />
+                          <div class="input-group-append">
+                            <button class="btn btn-dark increase-quantity"
+                              data-product-id="<%= cartProducts.ProductId._id %>"
+                              data-max-quantity="<%= cartProducts.ProductId.AvailableQuantity %>">
+                              +
+                            </button>
+
+                          </div>
+                        </div>
+                        <div class="">₹
+                          <text class="h6 " ;" id="productAmount_<%=cartProducts.ProductId._id %>"
+                            data-value="<%= cartProducts.ProductId.DiscountAmount %>">
+                            <%= cartProducts.ProductId.DiscountAmount * cartProducts.Quantity %>
+                          </text>/-
+                          <br />
+                          <small class="text-muted text-nowrap">
+                            ₹<%= cartProducts.ProductId.DiscountAmount %> / per item
+                          </small>
+                        </div>
+                      </div>
+                      <div
+                        class="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
+                        <div class="float-md-end mt-2">
+                          <!-- <a href="#!" class="btn btn-light border px-2 icon-hover-primary"><i
+                              class="fas fa-heart fa-lg px-1 text-secondary"></i></a> -->
+                              <a href="#" class="btn btn-light border mt-3 px-2 icon-hover-primary"
+                              onclick="confirmRemove('<%= cartProducts.ProductId._id %>')">
+                              <i class="fa fa-trash fa-lg px-1 mt-3 text-secondary g-2"></i>
+                           </a>
+                           
+
+                          <div id="outOfStock_<%= cartProducts.ProductId._id %>" class="text-danger"
+                            style="display: none;">Out of Stock</div>
+
+
+                          <% if(cartProducts.ProductId.AvailableQuantity < 1){ %>
+                            <div class="text-danger">Out of Stock</div>
+                            <% } %>
+
+                              <div id="stockMessage_<%= cartProducts.ProductId._id %>" class="text-danger"
+                                style="display: none;">
+                                Only <%= cartProducts.ProductId.AvailableQuantity %> items in stock
+                              </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                    <% }); %>
+
+                </div>
+
+                <div class="border-top pt-4 mx-4 mb-4">
+                  <p>
+                    <i class="fas fa-truck text-muted fa-lg"></i> Free Delivery within
+                    1-2 weeks
+                  </p>
+                  <p class="text-muted"></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- coupon code  -->
+            <div class="col-lg-3 coupon-bg">
+              <div class="card mb-3 border shadow-0">
+                <div class="card-body  coupon-bg">
+                  <form id="couponForm">
+                    <div class="form-group">
+                      <label class="form-label">Have you coupon?</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control border" name="couponCode" placeholder="Coupon code" />
+                        <button id="couponCheck" type="submit" class="btn btn-light border">Apply</button>
+                      </div>
+                      <div id="couponSuccessMessage" class="alert alert-success mt-3" style="display: none;">
+                        Coupon applied successfully!
+                      </div>
+                      <!-- <div id="messageContainer" class="alert alert-danger mt-3">sdfghjkl;</div> -->
+                      <div id="messageContainer" class="alert alert-danger mt-3" style="display: none;"></div>
+                      <!-- </div> -->
+                      <div id="couponWarningMessage" class="alert alert-danger mt-3" style="display: none;">
+                        Coupon Not Exists!
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+
+
+
+              <div class="card card-cart">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center justify-content-center">
+                    <h4
+                      style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;"
+                      class="card-title">Cart Totals</h4>
+                  </div>
+
+                  <!-- First Table -->
+                  <table class="table table-borderless">
+                    <tbody>
+                      <tr>
+                        <td style="width: 60%; font-family: 'Times New Roman', Times, serif">Sub Total :</td>
+                        <td style="width: 60%; font-family: 'Times New Roman', Times, serif" id="subtotalAmountCell">Rs
+                          0.00</td>
+                      </tr>
+                      <tr>
+                        <td style="width: 60%; font-family: 'Times New Roman', Times, serif">Coupon Amount :</td>
+                        <td style="width: 60%; font-family: 'Times New Roman', Times, serif" id="couponAmountCell">Rs
+                          -0.00</td>
+
+                      </tr>
+                      <tr>
+                        <td style="width: 60%; font-family: 'Times New Roman', Times, serif">Tax (18%) :</td>
+                        <td style="width: 60%; font-family: 'Times New Roman', Times, serif" id="TaxAmountCell">Rs
+                          0.00</td>
+
+                      </tr>
+                      <tr>
+                        <td style="width: 60%; font-family: 'Times New Roman', Times, serif;">Total Quantity : </td>
+                        <td id="totalItemsCell">Rs 29000</td>
+                      </tr>
+                      <tr>
+                        <td>Delivery :</td>
+                        <td><del>Rs 40</del><br> <span class="text-success">Free</span></td>
+                      </tr>
+                      <!-- Table Rows Here -->
+                    </tbody>
+                  </table>
+
+
+
+                  <!-- Second Table -->
+                  <table class="table table-borderless">
+                    <tbody>
+                      <tr>
+                        <hr>
+                        <!-- Table Row Content Here -->
+                        <td>
+                          <h6 style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Total :
+                          </h6>
+                        </td>
+                        <form id="checkoutForm" action="/cart" method="post">
+                          <td>
+                            <input type="text" style="width: 60%;" id="totalAmountCell" class="transparent-input "
+                              readonly>
+                          </td>
+                          <input type="hidden" id="hiddenTotalAmount" name="hiddenTotalAmount">
+
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <!-- Button -->
+
+                  <div class="d-flex justify-content-center align-items-center">
+
+                    <button type="button" id="placeOrderButton" class="btn btn-outline-dark btn-rounded">Place
+                      Order</button>
+                  </div>
+                  </form>
+                  <div class="d-flex justify-content-center align-items-center"><a href="/shop " class="mt-3">Back to
+                      Shop</a></div>
+                  <% } else { %>
+                    <div class="container mt-4">
+                      <div class="row justify-content-center">
+                        <div class="col-md-6 text-center">
+                          <img src="/assets/Empty Cart.png" alt="Cart Empty Image" class="img-fluid">
+                          <h3>Your cart is empty</h3>
+                          <a href="/shop" class="btn btn-primary mb-5">Back to Shop</a>
+                        </div>
+                      </div>
+                      <% } %>
+                    </div>
+                </div>
+              </div>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+              <script>
+                function confirmRemove(productId) {
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, remove it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // If the user clicks "Yes", redirect to remove endpoint
+                            window.location.href = `/deleteItem/${productId}`;
+                        }
+                    });
+                }
+             </script>             
+              <script src="/js/cart.js"> </script>

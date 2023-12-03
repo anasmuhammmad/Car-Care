@@ -1,0 +1,18 @@
+@media (max-width: 579px){
+    .side-img{
+        margin-top: 12vh;
+        width: 100px;
+        height: auto;
+    }
+}
+h6 {
+    cursor: pointer;
+    color: grey;
+}
+
+h6.active {
+    color: rgb(0, 0, 0); /* Change this to your desired active color */
+}
+#img-container{
+    z-index: 1;
+}

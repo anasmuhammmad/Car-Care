@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      overflow-x: hidden;
+      background-color: #b5f2fd;
+      background: linear-gradient(232deg, white, rgb(36, 150, 226));
+    }
+
+    #sidebar {
+      display: none;
+      position: fixed;
+      height: 100vh;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      width: 250px;
+      background: white;
+      padding-top: 20px;
+      z-index: 1;
+    }
+
+    #sidebar a {
+      padding: 8px;
+      text-decoration: none;
+      border-bottom: 0.5px solid rgba(0, 0, 0, 0.227);
+      color: #007BFF; /* Blue color for icons */
+      background-color: #f8f9fa; /* Light grey background */
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #sidebar a:hover {
+      background-color: rgb(11, 59, 74);
+      color: #fff;
+    }
+
+    #sidebar .active a {
+      background-color: rgb(0, 0, 0);
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div style="width: 100vw; height: auto; background-color: rgb(131, 177, 189);">
+      <button class="btn btn-light" type="button" onclick="toggleSidebar()">
+        <img src="/assets/car_care_logo-removebg-preview.png" style="width: 60px;" alt="">
+      </button>
+    </div>
+
+    <div id="sidebar">
+      <div class="text-center">
+        <!-- Your profile content here -->
+      </div>
+      <ul class="nav flex-column">
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/productView"><i class="fas fa-box"></i> Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/viewCategory"><i class="fas fa-list"></i> Categories</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/orderDetials"><i class="fas fa-shopping-cart"></i> Orders</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" href="/admin/users"><i class="fas fa-users"></i> Users</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="#"><i class="fas fa-money-bill-wave"></i> Payments</a>
+        </li> -->
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/offers"><i class="fas fa-money-bill-wave"></i> Referal Offers and Category Offers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/review-manage"><i class="fas fa-star"></i> Reviews</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/banner"><i class="fas fa-images"></i> Banners</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/Coupons"><i class="fas fa-tags"></i> Coupons</a>
+        </li>
+      </ul>
+      <div class="mt-auto">
+        <a href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <script>
+    function toggleSidebar() {
+      var sidebar = document.getElementById('sidebar');
+      sidebar.style.display = (sidebar.style.display === 'none' || sidebar.style.display === '') ? 'block' : 'none';
+    }
+  </script>
+</body>
+</html>

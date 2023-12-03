@@ -1,0 +1,55 @@
+<%- include('../layout/admin/layout') %>
+ <style>
+    body{
+        background-color: rgb(7, 38, 59);
+        color: black;
+    }
+ </style>
+ <%- include('../partials/admin-header-checking') %>
+   <% if(orders.length > 0) {%>
+       <% orders.forEach((order)=>{ %>
+
+      
+        <div class="card m-5 text-dark">
+            <div class="card-header">
+               <p style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-weight: 600;" >
+                Order ID: <%= order._id %>
+               </p> 
+            </div>
+            <% if(order.Status === "Return Accepted") {%>
+                <div class="card-body" style="background-color: rgba(58, 154, 199, 0.325);">
+                    <span style="font-family: 'Times New Roman', Times, serif; font-size: medium; font-weight: 600;">
+                        Return Status:</span> <p> <%= order.Status%></p>
+                    <a href="/admin/verify-return/<%= order._id %>">
+                        <button class="btn btn-success">Verify Return</button>
+                       </a> 
+                    <% } else { %>
+               <div class="card-body" style="background-color: rgba(41, 131, 240, 0.368);">
+                <span style="font-family: 'Times New Roman', Times, serif; font-size: medium; font-weight: 600;">
+                    Return Reason:</span> <p> <%= order.returnReason %></p>
+                <div class="">
+                    <a href="/admin/reject-return-request/<%= order._id %>">
+                        <button class="btn btn-danger btn-rounded">Reject</button>
+                    </a>
+                   <a href="/admin/return-accepted/<%= order._id %>">
+                    <button class="btn btn-success">Accept</button>
+                   </a> 
+                    <a href="/admin/return-order-detials/<%= order._id %>">
+                        <button class="btn btn-secondary">View Products</button>
+                    </a>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    <% }) %>
+<% } else { %>
+        <div class="container">
+            <div class="row">
+                <div class="d-flex justify-content-center align-items-center" style="height: 100vh;" >
+                    <h4>No Requests pending !</h4>
+                </div>
+            </div>
+        </div>
+    <% } %>
+
+        <%- include('../partials/user-footer') %>
